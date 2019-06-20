@@ -35,9 +35,9 @@ function addPlatforms() {
   platforms.create(160, 580, 'platform2');
   platforms.create(-10, 580, 'platform2');
   platforms.create(640, 580, 'platform2');
-  platforms.create(450, 450, 'platform');
-  platforms.create(150, 450, 'platform');
-  platforms.create(300, 280, 'platform');
+  platforms.create(480, 450, 'platform');
+  platforms.create(180, 450, 'platform');
+  platforms.create(330, 280, 'platform');
   platforms.setAll('body.immovable', true);
 }
 
@@ -66,8 +66,9 @@ function itemHandler(player, item) {
     currentScore = currentScore + 10;
   }
   if (item.key === 'poison') {
-    currentScore = currentScore - 10000000000000000000000000000000;
-  }
+    currentScore = currentScore - currentScore -1; 
+    }
+
   if (item.key == 'star') {
     currentScore = currentScore + 40;
   }
@@ -75,7 +76,6 @@ function itemHandler(player, item) {
       createBadge();
   }       
 }
-
 // when the player collects the badge at the end of the game
 function badgeHandler(player, badge) {
   badge.kill();
@@ -88,15 +88,15 @@ window.onload = function() {
   
   // before the game begins
   function preload() {
-    game.stage.backgroundColor = '#5d0000';
+    game.stage.backgroundColor = '#5dFFFF';
     
     //Load images
-    game.load.image('platform', 'assets/platform_1.png');
+    game.load.image('platform', 'assets/cloud.png');
     game.load.image('platform2', 'assets/platform_2.png');
     
     //Load spritesheets
     game.load.spritesheet('poison', 'assets/poison.png', 32, 32)
-    game.load.spritesheet('player', 'assets/chalkers.png', 48, 62);
+    game.load.spritesheet('player', 'assets/man.png', 32, 54);
     game.load.spritesheet('coin', 'assets/coin.png', 36, 44);
     game.load.spritesheet('badge', 'assets/badge.png', 42, 54);
     game.load.spritesheet('star', 'assets/star.png', 32, 32);
@@ -119,6 +119,8 @@ window.onload = function() {
     text = game.add.text(16, 16, "SCORE: " + currentScore, { font: "bold 24px Arial", fill: "white" });
     winningMessage = game.add.text(game.world.centerX, 275, "", { font: "bold 48px Arial", fill: "white" });
     winningMessage.anchor.setTo(0.5, 1);
+    loseMessage = game.add.text(game.world.centerX, 275, "", { font: "bold 48px Arial", fill: "white" });
+    loseMessage.anchor.setTo(0.5, 1);
   }
 
   // while the game is running
@@ -149,12 +151,16 @@ window.onload = function() {
     if (jumpButton.isDown && (player.body.onFloor() || player.body.touching.down)) {
       player.body.velocity.y = -420;
     }
-    // when the player winw the game
+    // when the player win the game
     if (won) {
-      winningMessage.text = "YOU'RE WIN!!!";
+      winningMessage.text = "YOU WIN!!!";
+      player = game.remove;
+    }
+    if (currentScore < 0) {
+      loseMessage.text = "LMAO GIT BODIED!!!"
+      player = game.remove;
     }
   }
-
   function render() {
 
   }
